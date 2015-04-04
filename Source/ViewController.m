@@ -2,16 +2,18 @@
 
 #import "ViewController.h"
 
+#import "ScrollViewDragBehaviour.h"
+
 @interface ViewController () <UIScrollViewDelegate>
 
-@property (nonatomic, strong, readonly) UIScrollView *scrollView;
+@property (nonatomic, strong, readonly) ScrollViewDragBehaviour *scrollViewBehaviour;
 @property (nonatomic, strong, readonly) UIView *square;
 
 @end
 
 @implementation ViewController
 {
-	UIScrollView *_scrollView;
+	ScrollViewDragBehaviour *_scrollViewBehaviour;
 	UIView *_square;
 }
 
@@ -38,8 +40,6 @@
 {
 	[super viewDidLoad];
 	
-	
-	
 	[[self view] addSubview:[self square]];
 }
 
@@ -47,36 +47,19 @@
 {
 	[super viewDidLayoutSubviews];
 	
-	CGRect bounds = [[self view] bounds];
-	
-	[[self scrollView] setContentSize:bounds.size];
-	[[self scrollView] setContentOffset:CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds))];
-}
-
-#pragma mark - UIScrollViewDelegate
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-	CGSize const size = [scrollView contentSize];
-	CGPoint const offset = [scrollView contentOffset];
-	
-	[[self square] setCenter:(CGPoint){
-		.x = size.width - offset.x,
-		.y = size.height - offset.y,
-	}];
+	[[self square] setCenter:CGPointMake(100, 100)];
+	[[self scrollViewBehaviour] updatePositionAndBounds];
 }
 
 #pragma mark -
 
-- (UIScrollView *)scrollView
+- (ScrollViewDragBehaviour *)scrollViewBehaviour
 {
-	if (_scrollView) return _scrollView;
+	if (_scrollViewBehaviour) return _scrollViewBehaviour;
 	
-	_scrollView = [[UIScrollView alloc] init];
-	[_scrollView setDelegate:self];
-	[_scrollView setHidden:YES];
+	_scrollViewBehaviour = [[ScrollViewDragBehaviour alloc] init];
 	
-	return _scrollView;
+	return _scrollViewBehaviour;
 }
 
 - (UIView *)square
@@ -86,8 +69,8 @@
 	_square = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
 	[_square setBackgroundColor:[UIColor redColor]];
 	
-	[_square addSubview:[self scrollView]];
-	[_square addGestureRecognizer:[[self scrollView] panGestureRecognizer]];
+	[[self scrollViewBehaviour] setView:_square];
+	
 	
 	return _square;
 }
