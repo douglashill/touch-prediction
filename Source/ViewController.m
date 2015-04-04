@@ -3,11 +3,15 @@
 #import "ViewController.h"
 
 #import "ScrollViewDragBehaviour.h"
+#import "SimpleDragBehaviour.h"
 
 @interface ViewController () <UIScrollViewDelegate>
 
 @property (nonatomic, strong, readonly) ScrollViewDragBehaviour *scrollViewBehaviour;
 @property (nonatomic, strong, readonly) UIView *square;
+
+@property (nonatomic, strong, readonly) SimpleDragBehaviour *simpleBehaviour;
+@property (nonatomic, strong, readonly) UIView *simpleSquare;
 
 @end
 
@@ -15,6 +19,9 @@
 {
 	ScrollViewDragBehaviour *_scrollViewBehaviour;
 	UIView *_square;
+	
+	SimpleDragBehaviour *_simpleBehaviour;
+	UIView *_simpleSquare;
 }
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -41,6 +48,7 @@
 	[super viewDidLoad];
 	
 	[[self view] addSubview:[self square]];
+	[[self view] addSubview:[self simpleSquare]];
 }
 
 - (void)viewDidLayoutSubviews
@@ -49,6 +57,8 @@
 	
 	[[self square] setCenter:CGPointMake(100, 100)];
 	[[self scrollViewBehaviour] updatePositionAndBounds];
+	
+	[[self simpleSquare] setCenter:CGPointMake(100, 200)];
 }
 
 #pragma mark -
@@ -77,6 +87,32 @@
 	[label sizeToFit];
 	
 	return _square;
+}
+
+- (SimpleDragBehaviour *)simpleBehaviour
+{
+	if (_simpleBehaviour) return _simpleBehaviour;
+	
+	_simpleBehaviour = [[SimpleDragBehaviour alloc] init];
+	
+	return _simpleBehaviour;
+}
+
+- (UIView *)simpleSquare
+{
+	if (_simpleSquare) return _simpleSquare;
+	
+	_simpleSquare = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 84, 84)];
+	[_simpleSquare setBackgroundColor:[UIColor cyanColor]];
+	
+	[[self simpleBehaviour] setView:_simpleSquare];
+	
+	UILabel *const label = [[UILabel alloc] init];
+	[label setText:@"Simple"];
+	[_simpleSquare addSubview:label];
+	[label sizeToFit];
+	
+	return _simpleSquare;
 }
 
 @end
