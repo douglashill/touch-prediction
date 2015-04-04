@@ -66,11 +66,15 @@
 {
 	if (_square) return _square;
 	
-	_square = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
-	[_square setBackgroundColor:[UIColor redColor]];
+	_square = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 84, 84)];
+	[_square setBackgroundColor:[UIColor orangeColor]];
 	
 	[[self scrollViewBehaviour] setView:_square];
 	
+	UILabel *const label = [[UILabel alloc] init];
+	[label setText:@"Scroll view"];
+	[_square addSubview:label];
+	[label sizeToFit];
 	
 	return _square;
 }
