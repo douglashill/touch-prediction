@@ -2,6 +2,7 @@
 
 #import "ViewController.h"
 
+#import "QuadraticMotionPredictionDragBehaviour.h"
 #import "ScrollViewDragBehaviour.h"
 #import "SimpleDragBehaviour.h"
 
@@ -13,6 +14,9 @@
 @property (nonatomic, strong, readonly) SimpleDragBehaviour *simpleBehaviour;
 @property (nonatomic, strong, readonly) UIView *simpleSquare;
 
+@property (nonatomic, strong, readonly) QuadraticMotionPredictionDragBehaviour *quadBehaviour;
+@property (nonatomic, strong, readonly) UIView *quadSquare;
+
 @end
 
 @implementation ViewController
@@ -22,6 +26,9 @@
 	
 	SimpleDragBehaviour *_simpleBehaviour;
 	UIView *_simpleSquare;
+	
+	QuadraticMotionPredictionDragBehaviour *_quadBehaviour;
+	UIView *_quadSquare;
 }
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -49,6 +56,7 @@
 	
 	[[self view] addSubview:[self square]];
 	[[self view] addSubview:[self simpleSquare]];
+	[[self view] addSubview:[self quadSquare]];
 }
 
 - (void)viewDidLayoutSubviews
@@ -59,6 +67,8 @@
 	[[self scrollViewBehaviour] updatePositionAndBounds];
 	
 	[[self simpleSquare] setCenter:CGPointMake(100, 200)];
+	
+	[[self quadSquare] setCenter:CGPointMake(100, 300)];
 }
 
 #pragma mark -
@@ -113,6 +123,33 @@
 	[label sizeToFit];
 	
 	return _simpleSquare;
+}
+
+- (QuadraticMotionPredictionDragBehaviour *)quadBehaviour
+{
+	if (_quadBehaviour) return _quadBehaviour;
+	
+	_quadBehaviour = [[QuadraticMotionPredictionDragBehaviour alloc] init];
+	
+	return _quadBehaviour;
+}
+
+- (UIView *)quadSquare
+{
+	if (_quadSquare) return _quadSquare;
+	
+	_quadSquare = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 84, 84)];
+	[_quadSquare setBackgroundColor:[UIColor magentaColor]];
+	
+	[[self quadBehaviour] setView:_quadSquare];
+	
+	UILabel *const label = [[UILabel alloc] init];
+	[label setNumberOfLines:0];
+	[label setText:@"Quadratic\nprediction"];
+	[_quadSquare addSubview:label];
+	[label sizeToFit];
+	
+	return _quadSquare;
 }
 
 @end
