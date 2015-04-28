@@ -5,7 +5,8 @@
 @import Accelerate;
 
 static CFTimeInterval const future = 3.0 / 60.0;
-static la_count_t const maxObservations = 8;
+static la_count_t const cols = 2; // Set to 2 for linear (constant velocity), 3 for quadratic (constant acceleration).
+static la_count_t const maxObservations = 4;
 
 static NSString *LAObjectDescription(la_object_t object)
 {
@@ -90,9 +91,14 @@ la_object_t dh_la_solve(la_object_t matrix_system, la_object_t obj_rhs)
 	// TODO: Fix returning early leaking memory
 }
 
-static CGFloat predictPosition(CFTimeInterval time, double *constants)
+static CGFloat predictPosition(CFTimeInterval time, double *constants, la_count_t countOfConstants)
 {
-	return constants[0] * time * time + constants[1] * time + constants[2];
+	CGFloat position = 0;
+	for (la_count_t idx = 0; idx < countOfConstants; ++idx) {
+		position += constants[idx] * pow(time, idx);
+	}
+	
+	return position;
 }
 
 @interface QuadraticMotionPredictionDragBehaviour ()
@@ -151,21 +157,20 @@ static CGFloat predictPosition(CFTimeInterval time, double *constants)
 	// Fallback
 	[view setCenter:currentPosition];
 	
-	if (_countOfPreviousPositions < 3) {
+	if (_countOfPreviousPositions < cols) {
 		return;
 	}
 	
 	CFTimeInterval const now = CACurrentMediaTime();
 	
-	static la_count_t const cols = 3;
 	double *timeMatrixBuffer = malloc(cols * _countOfPreviousPositions * sizeof(double));
-	for (la_count_t idx = 0; idx < _countOfPreviousPositions; ++idx) {
+	for (la_count_t rowIndex = 0; rowIndex < _countOfPreviousPositions; ++rowIndex) {
 		
-		double const relativeTime = _observationTimes[idx] - now;
+		double const relativeTime = _observationTimes[rowIndex] - now;
 		
-		timeMatrixBuffer[cols * idx] = relativeTime * relativeTime;
-		timeMatrixBuffer[cols * idx + 1] = relativeTime;
-		timeMatrixBuffer[cols * idx + 2] = 1;
+		for (la_count_t colIndex = 0; colIndex < cols; ++colIndex) {
+			timeMatrixBuffer[cols * rowIndex + colIndex] = pow(relativeTime, colIndex);
+		}
 	}
 	la_object_t const timeMatrix = la_matrix_from_double_buffer(timeMatrixBuffer, _countOfPreviousPositions, cols, cols, LA_NO_HINT, LA_ATTRIBUTE_ENABLE_LOGGING);
 	if (la_status(timeMatrix) != LA_SUCCESS) {
@@ -218,9 +223,8 @@ static CGFloat predictPosition(CFTimeInterval time, double *constants)
 	
 //	NSLog(@"SUCCESS");
 	
-	CGPoint const futurePosition = CGPointMake(predictPosition(future, xSolValues), predictPosition(future, ySolValues));
+	CGPoint const futurePosition = CGPointMake(predictPosition(future, xSolValues, cols), predictPosition(future, ySolValues, cols));
 	
-	[view setCenter:CGPointMake(predictPosition(future, xSolValues), predictPosition(future, ySolValues))];
 	[view setCenter:futurePosition];
 }
 
