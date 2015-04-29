@@ -2,7 +2,7 @@
 
 @import UIKit;
 
-@interface QuadraticMotionPredictionDragBehaviour : NSObject
+@interface MotionPredictingDragBehaviour : NSObject
 
 @property (nonatomic, strong) UIView *view;
 

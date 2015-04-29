@@ -13,7 +13,7 @@
 		A593604E1A22678800711C3F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A593604D1A22678800711C3F /* Images.xcassets */; };
 		A59360511A22678800711C3F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = A593604F1A22678800711C3F /* LaunchScreen.xib */; };
 		A59E8C731ACFF5F8002C1A4F /* SimpleDragBehaviour.m in Sources */ = {isa = PBXBuildFile; fileRef = A59E8C721ACFF5F8002C1A4F /* SimpleDragBehaviour.m */; };
-		A59E8C761ACFF9D9002C1A4F /* QuadraticMotionPredictionDragBehaviour.m in Sources */ = {isa = PBXBuildFile; fileRef = A59E8C751ACFF9D9002C1A4F /* QuadraticMotionPredictionDragBehaviour.m */; };
+		A59E8C761ACFF9D9002C1A4F /* MotionPredictingDragBehaviour.m in Sources */ = {isa = PBXBuildFile; fileRef = A59E8C751ACFF9D9002C1A4F /* MotionPredictingDragBehaviour.m */; };
 		A5C2AAB81ACFE5F200D29F23 /* ScrollViewDragBehaviour.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C2AAB71ACFE5F200D29F23 /* ScrollViewDragBehaviour.m */; };
 /* End PBXBuildFile section */
 
@@ -29,8 +29,8 @@
 		A59360501A22678800711C3F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		A59E8C711ACFF5F8002C1A4F /* SimpleDragBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleDragBehaviour.h; sourceTree = "<group>"; };
 		A59E8C721ACFF5F8002C1A4F /* SimpleDragBehaviour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleDragBehaviour.m; sourceTree = "<group>"; };
-		A59E8C741ACFF9D9002C1A4F /* QuadraticMotionPredictionDragBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuadraticMotionPredictionDragBehaviour.h; sourceTree = "<group>"; };
-		A59E8C751ACFF9D9002C1A4F /* QuadraticMotionPredictionDragBehaviour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuadraticMotionPredictionDragBehaviour.m; sourceTree = "<group>"; };
+		A59E8C741ACFF9D9002C1A4F /* MotionPredictingDragBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MotionPredictingDragBehaviour.h; sourceTree = "<group>"; };
+		A59E8C751ACFF9D9002C1A4F /* MotionPredictingDragBehaviour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MotionPredictingDragBehaviour.m; sourceTree = "<group>"; };
 		A5C2AAB61ACFE5F200D29F23 /* ScrollViewDragBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollViewDragBehaviour.h; sourceTree = "<group>"; };
 		A5C2AAB71ACFE5F200D29F23 /* ScrollViewDragBehaviour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollViewDragBehaviour.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -75,8 +75,8 @@
 				A5C2AAB71ACFE5F200D29F23 /* ScrollViewDragBehaviour.m */,
 				A59E8C711ACFF5F8002C1A4F /* SimpleDragBehaviour.h */,
 				A59E8C721ACFF5F8002C1A4F /* SimpleDragBehaviour.m */,
-				A59E8C741ACFF9D9002C1A4F /* QuadraticMotionPredictionDragBehaviour.h */,
-				A59E8C751ACFF9D9002C1A4F /* QuadraticMotionPredictionDragBehaviour.m */,
+				A59E8C741ACFF9D9002C1A4F /* MotionPredictingDragBehaviour.h */,
+				A59E8C751ACFF9D9002C1A4F /* MotionPredictingDragBehaviour.m */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -165,7 +165,7 @@
 				A59E8C731ACFF5F8002C1A4F /* SimpleDragBehaviour.m in Sources */,
 				A59360461A22678800711C3F /* AppDelegate.m in Sources */,
 				A59360431A22678800711C3F /* main.m in Sources */,
-				A59E8C761ACFF9D9002C1A4F /* QuadraticMotionPredictionDragBehaviour.m in Sources */,
+				A59E8C761ACFF9D9002C1A4F /* MotionPredictingDragBehaviour.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

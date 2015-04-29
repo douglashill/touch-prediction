@@ -2,7 +2,7 @@
 
 #import "ViewController.h"
 
-#import "QuadraticMotionPredictionDragBehaviour.h"
+#import "MotionPredictingDragBehaviour.h"
 #import "ScrollViewDragBehaviour.h"
 #import "SimpleDragBehaviour.h"
 
@@ -14,7 +14,7 @@
 @property (nonatomic, strong, readonly) SimpleDragBehaviour *simpleBehaviour;
 @property (nonatomic, strong, readonly) UIView *simpleSquare;
 
-@property (nonatomic, strong, readonly) QuadraticMotionPredictionDragBehaviour *quadBehaviour;
+@property (nonatomic, strong, readonly) MotionPredictingDragBehaviour *quadBehaviour;
 @property (nonatomic, strong, readonly) UIView *quadSquare;
 
 @end
@@ -27,7 +27,7 @@
 	SimpleDragBehaviour *_simpleBehaviour;
 	UIView *_simpleSquare;
 	
-	QuadraticMotionPredictionDragBehaviour *_quadBehaviour;
+	MotionPredictingDragBehaviour *_quadBehaviour;
 	UIView *_quadSquare;
 }
 
@@ -125,11 +125,11 @@
 	return _simpleSquare;
 }
 
-- (QuadraticMotionPredictionDragBehaviour *)quadBehaviour
+- (MotionPredictingDragBehaviour *)quadBehaviour
 {
 	if (_quadBehaviour) return _quadBehaviour;
 	
-	_quadBehaviour = [[QuadraticMotionPredictionDragBehaviour alloc] init];
+	_quadBehaviour = [[MotionPredictingDragBehaviour alloc] init];
 	
 	return _quadBehaviour;
 }
@@ -145,7 +145,7 @@
 	
 	UILabel *const label = [[UILabel alloc] init];
 	[label setNumberOfLines:0];
-	[label setText:@"Quadratic\nprediction"];
+	[label setText:@"Predicting"];
 	[_quadSquare addSubview:label];
 	[label sizeToFit];
 	

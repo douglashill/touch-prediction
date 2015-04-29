@@ -1,6 +1,6 @@
 // Douglas Hill, April 2015
 
-#import "QuadraticMotionPredictionDragBehaviour.h"
+#import "MotionPredictingDragBehaviour.h"
 
 @import Accelerate;
 
@@ -101,14 +101,14 @@ static CGFloat predictPosition(CFTimeInterval time, double *constants, la_count_
 	return position;
 }
 
-@interface QuadraticMotionPredictionDragBehaviour ()
+@interface MotionPredictingDragBehaviour ()
 
 @property (nonatomic, strong, readonly) CADisplayLink *displayLink;
 @property (nonatomic, strong, readonly) UIPanGestureRecognizer *recogniser;
 
 @end
 
-@implementation QuadraticMotionPredictionDragBehaviour
+@implementation MotionPredictingDragBehaviour
 {
 	CADisplayLink *_displayLink;
 	UIPanGestureRecognizer *_recogniser;
