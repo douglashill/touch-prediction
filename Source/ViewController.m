@@ -6,29 +6,22 @@
 #import "ScrollViewDragBehaviour.h"
 #import "SimpleDragBehaviour.h"
 
+static NSString *const behaviourKey = @"behaviour";
+static NSString *const viewKey = @"view";
+
 @interface ViewController () <UIScrollViewDelegate>
 
+/// An array of dictionaries, which each contain a view and its attached behaviour.
+@property (nonatomic, strong, readonly) NSArray *dragViewDictionaries;
+
 @property (nonatomic, strong, readonly) ScrollViewDragBehaviour *scrollViewBehaviour;
-@property (nonatomic, strong, readonly) UIView *square;
-
-@property (nonatomic, strong, readonly) SimpleDragBehaviour *simpleBehaviour;
-@property (nonatomic, strong, readonly) UIView *simpleSquare;
-
-@property (nonatomic, strong, readonly) MotionPredictingDragBehaviour *quadBehaviour;
-@property (nonatomic, strong, readonly) UIView *quadSquare;
 
 @end
 
 @implementation ViewController
 {
+	NSArray *_dragViewDictionaries;
 	ScrollViewDragBehaviour *_scrollViewBehaviour;
-	UIView *_square;
-	
-	SimpleDragBehaviour *_simpleBehaviour;
-	UIView *_simpleSquare;
-	
-	MotionPredictingDragBehaviour *_quadBehaviour;
-	UIView *_quadSquare;
 }
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -54,24 +47,57 @@
 {
 	[super viewDidLoad];
 	
-	[[self view] addSubview:[self square]];
-	[[self view] addSubview:[self simpleSquare]];
-	[[self view] addSubview:[self quadSquare]];
+	for (NSDictionary *dictionary in [self dragViewDictionaries]) {
+		[[self view] addSubview:dictionary[viewKey]];
+	}
 }
 
 - (void)viewDidLayoutSubviews
 {
 	[super viewDidLayoutSubviews];
 	
-	[[self square] setCenter:CGPointMake(100, 100)];
+	CGFloat y = 100;
+	for (NSDictionary *dictionary in [self dragViewDictionaries]) {
+		[dictionary[viewKey] setCenter:CGPointMake(100, y)];
+		y += 100;
+	}
+	
 	[[self scrollViewBehaviour] updatePositionAndBounds];
-	
-	[[self simpleSquare] setCenter:CGPointMake(100, 200)];
-	
-	[[self quadSquare] setCenter:CGPointMake(100, 300)];
 }
 
 #pragma mark -
+
+NSDictionary *dragViewDictionary(id <ViewBehaviour> behaviour, UIColor *colour)
+{
+	UIView *const view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 84, 84)];
+	[view setBackgroundColor:colour];
+	
+	[behaviour setView:view];
+	
+	UILabel *const label = [[UILabel alloc] init];
+	[label setFrame:[view bounds]];
+	[label setNumberOfLines:0];
+	[label setText:[behaviour description]];
+	[label setTextAlignment:NSTextAlignmentCenter];
+	[view addSubview:label];
+	
+	return @{behaviourKey : behaviour, viewKey : view};
+}
+
+- (NSArray *)dragViewDictionaries
+{
+	if (_dragViewDictionaries) return _dragViewDictionaries;
+	
+	NSMutableArray *dragViewDictionaries = [NSMutableArray array];
+	
+	[dragViewDictionaries addObject:dragViewDictionary([self scrollViewBehaviour], [UIColor orangeColor])];
+	[dragViewDictionaries addObject:dragViewDictionary([[SimpleDragBehaviour alloc] init], [UIColor cyanColor])];
+	[dragViewDictionaries addObject:dragViewDictionary([[MotionPredictingDragBehaviour alloc] init], [UIColor magentaColor])];
+	
+	_dragViewDictionaries = dragViewDictionaries;
+	
+	return _dragViewDictionaries;
+}
 
 - (ScrollViewDragBehaviour *)scrollViewBehaviour
 {
@@ -80,76 +106,6 @@
 	_scrollViewBehaviour = [[ScrollViewDragBehaviour alloc] init];
 	
 	return _scrollViewBehaviour;
-}
-
-- (UIView *)square
-{
-	if (_square) return _square;
-	
-	_square = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 84, 84)];
-	[_square setBackgroundColor:[UIColor orangeColor]];
-	
-	[[self scrollViewBehaviour] setView:_square];
-	
-	UILabel *const label = [[UILabel alloc] init];
-	[label setText:@"Scroll view"];
-	[_square addSubview:label];
-	[label sizeToFit];
-	
-	return _square;
-}
-
-- (SimpleDragBehaviour *)simpleBehaviour
-{
-	if (_simpleBehaviour) return _simpleBehaviour;
-	
-	_simpleBehaviour = [[SimpleDragBehaviour alloc] init];
-	
-	return _simpleBehaviour;
-}
-
-- (UIView *)simpleSquare
-{
-	if (_simpleSquare) return _simpleSquare;
-	
-	_simpleSquare = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 84, 84)];
-	[_simpleSquare setBackgroundColor:[UIColor cyanColor]];
-	
-	[[self simpleBehaviour] setView:_simpleSquare];
-	
-	UILabel *const label = [[UILabel alloc] init];
-	[label setText:@"Simple"];
-	[_simpleSquare addSubview:label];
-	[label sizeToFit];
-	
-	return _simpleSquare;
-}
-
-- (MotionPredictingDragBehaviour *)quadBehaviour
-{
-	if (_quadBehaviour) return _quadBehaviour;
-	
-	_quadBehaviour = [[MotionPredictingDragBehaviour alloc] init];
-	
-	return _quadBehaviour;
-}
-
-- (UIView *)quadSquare
-{
-	if (_quadSquare) return _quadSquare;
-	
-	_quadSquare = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 84, 84)];
-	[_quadSquare setBackgroundColor:[UIColor magentaColor]];
-	
-	[[self quadBehaviour] setView:_quadSquare];
-	
-	UILabel *const label = [[UILabel alloc] init];
-	[label setNumberOfLines:0];
-	[label setText:@"Predicting"];
-	[_quadSquare addSubview:label];
-	[label sizeToFit];
-	
-	return _quadSquare;
 }
 
 @end
