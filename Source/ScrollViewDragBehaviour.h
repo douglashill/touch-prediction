@@ -2,9 +2,9 @@
 
 @import UIKit;
 
-@interface ScrollViewDragBehaviour : NSObject
+#import "ViewBehaviour.h"
 
-@property (nonatomic, strong) UIView *view;
+@interface ScrollViewDragBehaviour : NSObject <ViewBehaviour>
 
 - (void)updatePositionAndBounds;
 

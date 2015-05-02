@@ -2,8 +2,8 @@
 
 @import UIKit;
 
-@interface MotionPredictingDragBehaviour : NSObject
+#import "ViewBehaviour.h"
 
-@property (nonatomic, strong) UIView *view;
+@interface MotionPredictingDragBehaviour : NSObject <ViewBehaviour>
 
 @end

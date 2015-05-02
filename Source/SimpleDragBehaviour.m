@@ -4,6 +4,13 @@
 
 @implementation SimpleDragBehaviour
 
+@synthesize view = _view;
+
+- (NSString *)description
+{
+	return @"Simple drag behaviour";
+}
+
 - (void)setView:(UIView *)view
 {
 	_view = view;

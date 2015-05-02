@@ -2,8 +2,8 @@
 
 @import UIKit;
 
-@interface SimpleDragBehaviour : NSObject
+#import "ViewBehaviour.h"
 
-@property (nonatomic, strong) UIView *view;
+@interface SimpleDragBehaviour : NSObject <ViewBehaviour>
 
 @end

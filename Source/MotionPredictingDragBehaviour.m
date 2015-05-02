@@ -119,6 +119,13 @@ static CGFloat predictPosition(CFTimeInterval time, double *constants, la_count_
 	la_count_t _countOfPreviousPositions;
 }
 
+@synthesize view = _view;
+
+- (NSString *)description
+{
+	return @"Predicting behaviour";
+}
+
 - (void)setView:(UIView *)view
 {
 	_view = view;

@@ -13,6 +13,13 @@
 	UIScrollView *_scrollView;
 }
 
+@synthesize view = _view;
+
+- (NSString *)description
+{
+	return @"Scroll view behaviour";
+}
+
 - (void)updatePositionAndBounds
 {
 	CGSize const size = [[[self view] superview] bounds].size;

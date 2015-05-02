@@ -31,6 +31,7 @@
 		A59E8C721ACFF5F8002C1A4F /* SimpleDragBehaviour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleDragBehaviour.m; sourceTree = "<group>"; };
 		A59E8C741ACFF9D9002C1A4F /* MotionPredictingDragBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MotionPredictingDragBehaviour.h; sourceTree = "<group>"; };
 		A59E8C751ACFF9D9002C1A4F /* MotionPredictingDragBehaviour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MotionPredictingDragBehaviour.m; sourceTree = "<group>"; };
+		A5B380B91AF4F1D0003FE2DD /* ViewBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewBehaviour.h; sourceTree = "<group>"; };
 		A5C2AAB61ACFE5F200D29F23 /* ScrollViewDragBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollViewDragBehaviour.h; sourceTree = "<group>"; };
 		A5C2AAB71ACFE5F200D29F23 /* ScrollViewDragBehaviour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollViewDragBehaviour.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -71,6 +72,7 @@
 				A59360451A22678800711C3F /* AppDelegate.m */,
 				A59360471A22678800711C3F /* ViewController.h */,
 				A59360481A22678800711C3F /* ViewController.m */,
+				A5B380B91AF4F1D0003FE2DD /* ViewBehaviour.h */,
 				A5C2AAB61ACFE5F200D29F23 /* ScrollViewDragBehaviour.h */,
 				A5C2AAB71ACFE5F200D29F23 /* ScrollViewDragBehaviour.m */,
 				A59E8C711ACFF5F8002C1A4F /* SimpleDragBehaviour.h */,
