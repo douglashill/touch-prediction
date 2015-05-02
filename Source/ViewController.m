@@ -75,6 +75,7 @@ NSDictionary *dragViewDictionary(id <ViewBehaviour> behaviour, UIColor *colour)
 	[behaviour setView:view];
 	
 	UILabel *const label = [[UILabel alloc] init];
+	[label setFont:[UIFont systemFontOfSize:16]];
 	[label setFrame:[view bounds]];
 	[label setNumberOfLines:0];
 	[label setText:[behaviour description]];
@@ -92,7 +93,10 @@ NSDictionary *dragViewDictionary(id <ViewBehaviour> behaviour, UIColor *colour)
 	
 	[dragViewDictionaries addObject:dragViewDictionary([self scrollViewBehaviour], [UIColor orangeColor])];
 	[dragViewDictionaries addObject:dragViewDictionary([[SimpleDragBehaviour alloc] init], [UIColor cyanColor])];
-	[dragViewDictionaries addObject:dragViewDictionary([[MotionPredictingDragBehaviour alloc] init], [UIColor magentaColor])];
+	[dragViewDictionaries addObject:dragViewDictionary([[MotionPredictingDragBehaviour alloc] initWithFramesToPredict:2 polynomialDegree:1 maxObservations:2], [UIColor magentaColor])];
+	[dragViewDictionaries addObject:dragViewDictionary([[MotionPredictingDragBehaviour alloc] initWithFramesToPredict:2 polynomialDegree:1 maxObservations:3], [UIColor magentaColor])];
+	[dragViewDictionaries addObject:dragViewDictionary([[MotionPredictingDragBehaviour alloc] initWithFramesToPredict:2 polynomialDegree:2 maxObservations:5], [UIColor magentaColor])];
+	[dragViewDictionaries addObject:dragViewDictionary([[MotionPredictingDragBehaviour alloc] initWithFramesToPredict:2 polynomialDegree:2 maxObservations:7], [UIColor magentaColor])];
 	
 	_dragViewDictionaries = dragViewDictionaries;
 	

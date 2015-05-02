@@ -4,10 +4,6 @@
 
 @import Accelerate;
 
-static CFTimeInterval const future = 3.0 / 60.0;
-static la_count_t const cols = 2; // Set to 2 for linear (constant velocity), 3 for quadratic (constant acceleration).
-static la_count_t const maxObservations = 4;
-
 static NSString *LAObjectDescription(la_object_t object)
 {
 	la_count_t const cols = la_matrix_cols(object);
@@ -113,17 +109,45 @@ static CGFloat predictPosition(CFTimeInterval time, double *constants, la_count_
 	CADisplayLink *_displayLink;
 	UIPanGestureRecognizer *_recogniser;
 	
-	double _previousXPositions[maxObservations];
-	double _previousYPositions[maxObservations];
-	double _observationTimes[maxObservations];
+	double *_previousXPositions;
+	double *_previousYPositions;
+	double *_observationTimes;
 	la_count_t _countOfPreviousPositions;
 }
 
 @synthesize view = _view;
 
+- (void)dealloc
+{
+	free(_previousXPositions);
+	free(_previousYPositions);
+	free(_observationTimes);
+}
+
+- (instancetype)init
+{
+	return [self initWithFramesToPredict:0 polynomialDegree:0 maxObservations:0];
+}
+
+- (instancetype)initWithFramesToPredict:(NSUInteger)framesToPredict polynomialDegree:(NSUInteger)polynomialDegree maxObservations:(NSUInteger)maxObservations
+{
+	self = [super init];
+	if (self == nil) return nil;
+	
+	_framesToPredict = framesToPredict;
+	_polynomialDegree = polynomialDegree;
+	_maxObservations = maxObservations;
+	
+	_previousXPositions = malloc(maxObservations * sizeof *_previousXPositions);
+	_previousYPositions = malloc(maxObservations * sizeof *_previousYPositions);
+	_observationTimes = malloc(maxObservations * sizeof *_observationTimes);
+	
+	return self;
+}
+
 - (NSString *)description
 {
-	return @"Predicting behaviour";
+	return [NSString stringWithFormat:@"%lu %@\ndegree %lu\n%lu obs", (unsigned long)[self framesToPredict], [self framesToPredict] == 1 ? @"frame" : @"frames", (unsigned long)[self polynomialDegree], (unsigned long)[self maxObservations]];
 }
 
 - (void)setView:(UIView *)view
@@ -164,22 +188,24 @@ static CGFloat predictPosition(CFTimeInterval time, double *constants, la_count_
 	// Fallback
 	[view setCenter:currentPosition];
 	
-	if (_countOfPreviousPositions < cols) {
+	la_count_t const countOfColumns = [self polynomialDegree] + 1;
+	
+	if (_countOfPreviousPositions < countOfColumns) {
 		return;
 	}
 	
 	CFTimeInterval const now = CACurrentMediaTime();
 	
-	double *timeMatrixBuffer = malloc(cols * _countOfPreviousPositions * sizeof(double));
+	double *timeMatrixBuffer = malloc(countOfColumns * _countOfPreviousPositions * sizeof(double));
 	for (la_count_t rowIndex = 0; rowIndex < _countOfPreviousPositions; ++rowIndex) {
 		
 		double const relativeTime = _observationTimes[rowIndex] - now;
 		
-		for (la_count_t colIndex = 0; colIndex < cols; ++colIndex) {
-			timeMatrixBuffer[cols * rowIndex + colIndex] = pow(relativeTime, colIndex);
+		for (la_count_t colIndex = 0; colIndex < countOfColumns; ++colIndex) {
+			timeMatrixBuffer[countOfColumns * rowIndex + colIndex] = pow(relativeTime, colIndex);
 		}
 	}
-	la_object_t const timeMatrix = la_matrix_from_double_buffer(timeMatrixBuffer, _countOfPreviousPositions, cols, cols, LA_NO_HINT, LA_ATTRIBUTE_ENABLE_LOGGING);
+	la_object_t const timeMatrix = la_matrix_from_double_buffer(timeMatrixBuffer, _countOfPreviousPositions, countOfColumns, countOfColumns, LA_NO_HINT, LA_ATTRIBUTE_ENABLE_LOGGING);
 	if (la_status(timeMatrix) != LA_SUCCESS) {
 		NSLog(@"Could not create time matrix: %@", @(la_status(timeMatrix)));
 	}
@@ -214,14 +240,14 @@ static CGFloat predictPosition(CFTimeInterval time, double *constants, la_count_
 		return;
 	}
 	
-	double xSolValues[cols];
+	double xSolValues[countOfColumns];
 	la_status_t const xStatus = la_vector_to_double_buffer(xSolValues, 1, xSolution);
 	if (xStatus != LA_SUCCESS) {
 		NSLog(@"Could not read x values: %@", @(xStatus));
 		return;
 	}
 	
-	double ySolValues[cols];
+	double ySolValues[countOfColumns];
 	la_status_t const yStatus = la_vector_to_double_buffer(ySolValues, 1, ySolution);
 	if (yStatus != LA_SUCCESS) {
 		NSLog(@"Could not read y values: %@", @(yStatus));
@@ -230,18 +256,23 @@ static CGFloat predictPosition(CFTimeInterval time, double *constants, la_count_
 	
 //	NSLog(@"SUCCESS");
 	
-	CGPoint const futurePosition = CGPointMake(predictPosition(future, xSolValues, cols), predictPosition(future, ySolValues, cols));
+	CFTimeInterval const future = [self framesToPredict] / 60.0;
+	CGPoint const futurePosition = CGPointMake(predictPosition(future, xSolValues, countOfColumns), predictPosition(future, ySolValues, countOfColumns));
 	
 	[view setCenter:futurePosition];
 }
 
 - (void)savePositionObservation:(CGPoint)position
 {
-	if (_countOfPreviousPositions == maxObservations) {
+	if ([self maxObservations] == 0) {
+		return;
+	}
+	
+	if (_countOfPreviousPositions == [self maxObservations]) {
 		// Remove top entries by shifting everything else up.
-		memmove(_previousXPositions, _previousXPositions + 1, (maxObservations - 1) * sizeof _previousXPositions[0]);
-		memmove(_previousYPositions, _previousYPositions + 1, (maxObservations - 1) * sizeof _previousYPositions[0]);
-		memmove(_observationTimes,   _observationTimes + 1,   (maxObservations - 1) * sizeof _observationTimes[0]);
+		memmove(_previousXPositions, _previousXPositions + 1, ([self maxObservations] - 1) * sizeof _previousXPositions[0]);
+		memmove(_previousYPositions, _previousYPositions + 1, ([self maxObservations] - 1) * sizeof _previousYPositions[0]);
+		memmove(_observationTimes,   _observationTimes + 1,   ([self maxObservations] - 1) * sizeof _observationTimes[0]);
 		
 		--_countOfPreviousPositions;
 	}
