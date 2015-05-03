@@ -14,6 +14,7 @@
 		A59360511A22678800711C3F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = A593604F1A22678800711C3F /* LaunchScreen.xib */; };
 		A59E8C731ACFF5F8002C1A4F /* SimpleDragBehaviour.m in Sources */ = {isa = PBXBuildFile; fileRef = A59E8C721ACFF5F8002C1A4F /* SimpleDragBehaviour.m */; };
 		A59E8C761ACFF9D9002C1A4F /* MotionPredictingDragBehaviour.m in Sources */ = {isa = PBXBuildFile; fileRef = A59E8C751ACFF9D9002C1A4F /* MotionPredictingDragBehaviour.m */; };
+		A5B380BC1AF638F0003FE2DD /* LinearAlgebraAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B380BB1AF638F0003FE2DD /* LinearAlgebraAdditions.m */; };
 		A5C2AAB81ACFE5F200D29F23 /* ScrollViewDragBehaviour.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C2AAB71ACFE5F200D29F23 /* ScrollViewDragBehaviour.m */; };
 /* End PBXBuildFile section */
 
@@ -32,6 +33,8 @@
 		A59E8C741ACFF9D9002C1A4F /* MotionPredictingDragBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MotionPredictingDragBehaviour.h; sourceTree = "<group>"; };
 		A59E8C751ACFF9D9002C1A4F /* MotionPredictingDragBehaviour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MotionPredictingDragBehaviour.m; sourceTree = "<group>"; };
 		A5B380B91AF4F1D0003FE2DD /* ViewBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewBehaviour.h; sourceTree = "<group>"; };
+		A5B380BA1AF638F0003FE2DD /* LinearAlgebraAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinearAlgebraAdditions.h; sourceTree = "<group>"; };
+		A5B380BB1AF638F0003FE2DD /* LinearAlgebraAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinearAlgebraAdditions.m; sourceTree = "<group>"; };
 		A5C2AAB61ACFE5F200D29F23 /* ScrollViewDragBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollViewDragBehaviour.h; sourceTree = "<group>"; };
 		A5C2AAB71ACFE5F200D29F23 /* ScrollViewDragBehaviour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollViewDragBehaviour.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -79,6 +82,8 @@
 				A59E8C721ACFF5F8002C1A4F /* SimpleDragBehaviour.m */,
 				A59E8C741ACFF9D9002C1A4F /* MotionPredictingDragBehaviour.h */,
 				A59E8C751ACFF9D9002C1A4F /* MotionPredictingDragBehaviour.m */,
+				A5B380BA1AF638F0003FE2DD /* LinearAlgebraAdditions.h */,
+				A5B380BB1AF638F0003FE2DD /* LinearAlgebraAdditions.m */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -168,6 +173,7 @@
 				A59360461A22678800711C3F /* AppDelegate.m in Sources */,
 				A59360431A22678800711C3F /* main.m in Sources */,
 				A59E8C761ACFF9D9002C1A4F /* MotionPredictingDragBehaviour.m in Sources */,
+				A5B380BC1AF638F0003FE2DD /* LinearAlgebraAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
