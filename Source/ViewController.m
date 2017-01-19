@@ -30,6 +30,12 @@ static NSString *const viewKey = @"view";
 	return [self init];
 }
 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+	NSLog(@"Incorrect initialiser “%s” sent to %@", __PRETTY_FUNCTION__, [self class]);
+	return [self init];
+}
+
 - (instancetype)init
 {
 	self = [super initWithNibName:nil bundle:nil];

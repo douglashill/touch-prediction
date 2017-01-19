@@ -35,16 +35,17 @@ la_object_t dh_la_solve(la_object_t matrix_system, la_object_t obj_rhs)
 {
 	NSCAssert(la_matrix_rows(matrix_system) == la_matrix_rows(obj_rhs), @"Dimension mismatch");
 	NSCAssert(la_matrix_rows(matrix_system) >= la_matrix_cols(matrix_system), @"Dimension mismatch: not enough observations");
-	
-	__CLPK_integer m = la_matrix_rows(matrix_system); // Height of A and b, number of observations
-	__CLPK_integer n = la_matrix_cols(matrix_system); // Width of A and height of x, number of coefficients
-	__CLPK_integer nrhs = la_matrix_cols(obj_rhs);    // Width of b and x
+
+	// Casting loses precision, but is needed for dgels_
+	__CLPK_integer m = (__CLPK_integer)la_matrix_rows(matrix_system); // Height of A and b, number of observations
+	__CLPK_integer n = (__CLPK_integer)la_matrix_cols(matrix_system); // Width of A and height of x, number of coefficients
+	__CLPK_integer nrhs = (__CLPK_integer)la_matrix_cols(obj_rhs);    // Width of b and x
 	
 	double *Adata = malloc(m * n * sizeof(double));
-	la_status_t aReadingStatus = la_matrix_to_double_buffer(Adata, m, la_transpose(matrix_system));
+	la_matrix_to_double_buffer(Adata, m, la_transpose(matrix_system));
 	
 	double *bdata = malloc(m * nrhs * sizeof(double));
-	la_status_t bReadingStatus = la_matrix_to_double_buffer(bdata, m, la_transpose(obj_rhs));
+	la_matrix_to_double_buffer(bdata, m, la_transpose(obj_rhs));
 	
 	// Find the least squares solution to the overdetermined linear system Ax = b
 	// http://www.netlib.org/lapack/lug/node27.html
