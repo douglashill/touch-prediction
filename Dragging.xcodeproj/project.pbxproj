@@ -58,6 +58,7 @@
 				A593603E1A22678700711C3F /* Products */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 1;
 		};
 		A593603E1A22678700711C3F /* Products */ = {
 			isa = PBXGroup;
